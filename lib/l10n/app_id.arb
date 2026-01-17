@@ -1,0 +1,39 @@
+{
+  "@@locale": "id",
+  "appTitle": "Manajer Tugas Akademik",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "semester": "Semester",
+  "@semester": {
+    "description": "Academic semester"
+  },
+  "uts": "UTS",
+  "@uts": {
+    "description": "Ujian Tengah Semester (Midterm Exam)"
+  },
+  "uas": "UAS",
+  "@uas": {
+    "description": "Ujian Akhir Semester (Final Exam)"
+  },
+  "tugas": "Tugas",
+  "@tugas": {
+    "description": "Task or assignment"
+  },
+  "progres": "Progres",
+  "@progres": {
+    "description": "Progress"
+  },
+  "deadline": "Batas Waktu",
+  "@deadline": {
+    "description": "Deadline"
+  },
+  "mataKuliah": "Mata Kuliah",
+  "@mataKuliah": {
+    "description": "Course or subject"
+  },
+  "dosen": "Dosen",
+  "@dosen": {
+    "description": "Instructor or lecturer"
+  }
+}
