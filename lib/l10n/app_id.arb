@@ -165,6 +165,19 @@
   "@exportError": {
     "description": "Export error message"
   },
+  "exportLocationInfo": "File backup tersimpan di folder Download dengan nama: {fileName}",
+  "@exportLocationInfo": {
+    "description": "Export location info message",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "storagePermissionRequired": "Izin akses penyimpanan diperlukan untuk ekspor data",
+  "@storagePermissionRequired": {
+    "description": "Storage permission required message"
+  },
   "importSuccess": "Berhasil mengimpor {count} tugas",
   "@importSuccess": {
     "description": "Import success message",
@@ -457,7 +470,7 @@
   "@appDescription": {
     "description": "App description"
   },
-  "developerTeam": "Academic Task Manager Team",
+  "developerTeam": "Kalyzet Team",
   "@developerTeam": {
     "description": "Developer team name"
   },

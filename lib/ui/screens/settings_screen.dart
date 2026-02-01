@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/backup_service.dart';
 import '../../services/notification_service.dart';
@@ -94,25 +95,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     try {
+      // Request storage permission for Android
+      if (Platform.isAndroid) {
+        final permission = await Permission.storage.request();
+        if (permission != PermissionStatus.granted) {
+          if (mounted) {
+            _showErrorSnackBar('Izin akses penyimpanan diperlukan untuk ekspor data');
+          }
+          return;
+        }
+      }
+
       // Generate JSON data
       final jsonData = await _backupService.exportToJson();
       
-      // Get documents directory
-      final directory = await getApplicationDocumentsDirectory();
-      final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
+      // Get Downloads directory
+      Directory? directory;
+      String locationMessage = '';
+      
+      if (Platform.isAndroid) {
+        // For Android, try to use the public Downloads folder
+        directory = Directory('/storage/emulated/0/Download');
+        
+        // Check if the directory exists and is writable
+        if (!await directory.exists()) {
+          // Try alternative paths
+          final externalDir = await getExternalStorageDirectory();
+          if (externalDir != null) {
+            directory = Directory('${externalDir.path}/Download');
+            if (!await directory.exists()) {
+              await directory.create(recursive: true);
+            }
+          } else {
+            // Final fallback to application documents directory
+            directory = await getApplicationDocumentsDirectory();
+          }
+        }
+        locationMessage = 'File tersimpan di folder Download';
+      } else if (Platform.isIOS) {
+        // For iOS, use Documents directory (accessible via Files app)
+        directory = await getApplicationDocumentsDirectory();
+        locationMessage = 'File tersimpan di Documents aplikasi (dapat diakses via Files app)';
+      } else {
+        // For other platforms, try Downloads directory
+        try {
+          directory = await getDownloadsDirectory();
+          locationMessage = 'File tersimpan di folder Downloads';
+        } catch (e) {
+          // Fallback to documents directory
+          directory = await getApplicationDocumentsDirectory();
+          locationMessage = 'File tersimpan di folder Documents';
+        }
+      }
+      
+      final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-').replaceAll('.', '-');
       final fileName = 'tugas_backup_$timestamp.json';
-      final filePath = '${directory.path}/$fileName';
+      final filePath = '${directory!.path}/$fileName';
       
       // Write file
       final file = File(filePath);
       await file.writeAsString(jsonData);
       
       if (mounted) {
-        _showSuccessSnackBar(l10n.exportSuccess);
+        _showSuccessSnackBar('${l10n.exportSuccess}\n$locationMessage\nNama file: $fileName');
       }
     } catch (e) {
       if (mounted) {
-        _showErrorSnackBar(l10n.exportError);
+        _showErrorSnackBar('${l10n.exportError}: ${e.toString()}');
       }
     } finally {
       if (mounted) {
@@ -312,7 +361,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: theme.colorScheme.primary,
             ),
             title: Text(l10n.developer),
-            subtitle: const Text('Academic Task Manager Team'),
+            subtitle: const Text('Kalyzet Team'),
           ),
           const Divider(height: 1),
           ListTile(

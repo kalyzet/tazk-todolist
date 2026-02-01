@@ -334,6 +334,18 @@ abstract class AppLocalizations {
   /// **'Gagal mengekspor data'**
   String get exportError;
 
+  /// Export location info message
+  ///
+  /// In id, this message translates to:
+  /// **'File backup tersimpan di folder Download dengan nama: {fileName}'**
+  String exportLocationInfo(String fileName);
+
+  /// Storage permission required message
+  ///
+  /// In id, this message translates to:
+  /// **'Izin akses penyimpanan diperlukan untuk ekspor data'**
+  String get storagePermissionRequired;
+
   /// Import success message
   ///
   /// In id, this message translates to:
@@ -745,7 +757,7 @@ abstract class AppLocalizations {
   /// Developer team name
   ///
   /// In id, this message translates to:
-  /// **'Academic Task Manager Team'**
+  /// **'Kalyzet Team'**
   String get developerTeam;
 
   /// Notification save error

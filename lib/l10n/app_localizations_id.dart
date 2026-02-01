@@ -132,6 +132,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get exportError => 'Gagal mengekspor data';
 
   @override
+  String exportLocationInfo(String fileName) {
+    return 'File backup tersimpan di folder Download dengan nama: $fileName';
+  }
+
+  @override
+  String get storagePermissionRequired =>
+      'Izin akses penyimpanan diperlukan untuk ekspor data';
+
+  @override
   String importSuccess(int count) {
     return 'Berhasil mengimpor $count tugas';
   }
@@ -350,7 +359,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get appDescription => 'Aplikasi manajemen tugas untuk mahasiswa';
 
   @override
-  String get developerTeam => 'Academic Task Manager Team';
+  String get developerTeam => 'Kalyzet Team';
 
   @override
   String get notificationSaveError => 'Gagal menyimpan pengaturan notifikasi';
