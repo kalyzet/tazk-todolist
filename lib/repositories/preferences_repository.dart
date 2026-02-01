@@ -5,6 +5,7 @@ import '../models/academic_context.dart';
 class PreferencesRepository {
   static const String _lastContextKey = 'last_academic_context';
   static const String _sortPreferenceKey = 'sort_preference';
+  static const String _notificationsEnabledKey = 'notifications_enabled';
   
   // Valid sort options for validation
   static const List<String> validSortOptions = [
@@ -123,7 +124,8 @@ class PreferencesRepository {
       final prefs = await SharedPreferences.getInstance();
       final contextResult = await prefs.remove(_lastContextKey);
       final sortResult = await prefs.remove(_sortPreferenceKey);
-      return contextResult && sortResult;
+      final notificationResult = await prefs.remove(_notificationsEnabledKey);
+      return contextResult && sortResult && notificationResult;
     } catch (e) {
       return false;
     }
@@ -157,5 +159,46 @@ class PreferencesRepository {
   /// Validate if a sort option is valid
   static bool isValidSortOption(String sortBy) {
     return validSortOptions.contains(sortBy);
+  }
+  
+  /// Save notification preference
+  Future<bool> saveNotificationsEnabled(bool enabled) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return await prefs.setBool(_notificationsEnabledKey, enabled);
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  /// Retrieve notification preference
+  /// Returns true as default if no preference is saved
+  Future<bool> getNotificationsEnabled() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getBool(_notificationsEnabledKey) ?? true; // Default to enabled
+    } catch (e) {
+      return true; // Default to enabled on error
+    }
+  }
+  
+  /// Clear notification preference
+  Future<bool> clearNotificationsEnabled() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return await prefs.remove(_notificationsEnabledKey);
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  /// Check if notification preference exists
+  Future<bool> hasNotificationsEnabled() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.containsKey(_notificationsEnabledKey);
+    } catch (e) {
+      return false;
+    }
   }
 }

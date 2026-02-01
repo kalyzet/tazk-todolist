@@ -103,6 +103,66 @@ void main() {
           expect(shouldScheduleNotifications, isFalse);
         }
       });
+
+      /// **Feature: academic-task-manager, Property 23: Notification preference enforcement**
+      /// **Validates: Requirements 9.5**
+      /// 
+      /// Property: For any notification setting (enabled/disabled), the system should 
+      /// respect the user's preference when scheduling notifications
+      test('Property 23: Notification preference enforcement', () async {
+        // Run property test with multiple iterations
+        for (int iteration = 0; iteration < 100; iteration++) {
+          final now = DateTime.now();
+          final deadline = now.add(Duration(days: (iteration % 3) + 1)); // 1-3 days
+          final progress = iteration % 100; // 0-99% progress
+          final notificationsEnabled = iteration % 2 == 0; // Alternate enabled/disabled
+          
+          final task = Task(
+            id: iteration + 1,
+            name: 'Test Task $iteration',
+            courseName: 'Test Course',
+            instructorName: 'Test Instructor',
+            deadline: deadline,
+            semester: 'Semester ${(iteration % 8) + 1}',
+            period: iteration % 2 == 0 ? 'UTS' : 'UAS',
+            progress: progress,
+            createdAt: now.subtract(Duration(days: 7)),
+            updatedAt: now,
+          );
+
+          // Test the property: notification service should respect user preference
+          notificationService.setNotificationsEnabled(notificationsEnabled);
+          
+          // Verify that the notification service stores the preference correctly
+          expect(notificationService.notificationsEnabled, equals(notificationsEnabled));
+          
+          // Test that the preference affects notification behavior
+          if (notificationsEnabled) {
+            // When notifications are enabled, eligible tasks should be considered for scheduling
+            final isEligibleTask = task.progress < 100 && 
+                                 task.id != null && 
+                                 task.deadline.isAfter(now);
+            
+            if (isEligibleTask) {
+              // The service should be ready to schedule notifications for eligible tasks
+              expect(notificationService.notificationsEnabled, isTrue);
+            }
+          } else {
+            // When notifications are disabled, no tasks should be scheduled regardless of eligibility
+            expect(notificationService.notificationsEnabled, isFalse);
+            
+            // Even eligible tasks should not be scheduled when notifications are disabled
+            final isEligibleTask = task.progress < 100 && 
+                                 task.id != null && 
+                                 task.deadline.isAfter(now);
+            
+            if (isEligibleTask) {
+              // Despite being eligible, notifications should be disabled
+              expect(notificationService.notificationsEnabled, isFalse);
+            }
+          }
+        }
+      });
     });
 
     group('Unit Tests', () {

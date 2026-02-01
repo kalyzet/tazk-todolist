@@ -35,5 +35,470 @@
   "dosen": "Dosen",
   "@dosen": {
     "description": "Instructor or lecturer"
+  },
+  "setupTitle": "Pengaturan Awal",
+  "@setupTitle": {
+    "description": "Initial setup title"
+  },
+  "setupSubtitle": "Pilih semester dan periode untuk memulai",
+  "@setupSubtitle": {
+    "description": "Initial setup subtitle"
+  },
+  "selectSemester": "Pilih Semester",
+  "@selectSemester": {
+    "description": "Select semester prompt"
+  },
+  "selectPeriod": "Pilih Periode",
+  "@selectPeriod": {
+    "description": "Select period prompt"
+  },
+  "utsLong": "Ujian Tengah Semester",
+  "@utsLong": {
+    "description": "Full name for UTS"
+  },
+  "uasLong": "Ujian Akhir Semester",
+  "@uasLong": {
+    "description": "Full name for UAS"
+  },
+  "continueButton": "Lanjutkan",
+  "@continueButton": {
+    "description": "Continue button"
+  },
+  "pleaseSelectSemester": "Silakan pilih semester",
+  "@pleaseSelectSemester": {
+    "description": "Please select semester error"
+  },
+  "pleaseSelectPeriod": "Silakan pilih periode",
+  "@pleaseSelectPeriod": {
+    "description": "Please select period error"
+  },
+  "taskList": "Daftar Tugas",
+  "@taskList": {
+    "description": "Task list title"
+  },
+  "addTask": "Tambah Tugas",
+  "@addTask": {
+    "description": "Add task button"
+  },
+  "sortBy": "Urutkan berdasarkan",
+  "@sortBy": {
+    "description": "Sort by label"
+  },
+  "noTasks": "Belum ada tugas",
+  "@noTasks": {
+    "description": "No tasks message"
+  },
+  "noTasksSubtitle": "Tekan tombol + untuk menambah tugas baru",
+  "@noTasksSubtitle": {
+    "description": "No tasks subtitle"
+  },
+  "remainingDays": "{count} hari tersisa",
+  "@remainingDays": {
+    "description": "Remaining days",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "overdue": "Terlambat",
+  "@overdue": {
+    "description": "Overdue indicator"
+  },
+  "completed": "Selesai",
+  "@completed": {
+    "description": "Completed status"
+  },
+  "settings": "Pengaturan",
+  "@settings": {
+    "description": "Settings"
+  },
+  "notifications": "Notifikasi",
+  "@notifications": {
+    "description": "Notifications"
+  },
+  "enableNotifications": "Aktifkan Notifikasi",
+  "@enableNotifications": {
+    "description": "Enable notifications"
+  },
+  "notificationDescription": "Terima pengingat untuk tugas yang mendekati deadline",
+  "@notificationDescription": {
+    "description": "Notification description"
+  },
+  "backup": "Cadangan",
+  "@backup": {
+    "description": "Backup"
+  },
+  "exportData": "Ekspor Data",
+  "@exportData": {
+    "description": "Export data"
+  },
+  "importData": "Impor Data",
+  "@importData": {
+    "description": "Import data"
+  },
+  "exportDescription": "Simpan semua tugas ke file JSON",
+  "@exportDescription": {
+    "description": "Export description"
+  },
+  "importDescription": "Muat tugas dari file JSON",
+  "@importDescription": {
+    "description": "Import description"
+  },
+  "about": "Tentang",
+  "@about": {
+    "description": "About"
+  },
+  "appVersion": "Versi Aplikasi",
+  "@appVersion": {
+    "description": "App version"
+  },
+  "developer": "Pengembang",
+  "@developer": {
+    "description": "Developer"
+  },
+  "exportSuccess": "Data berhasil diekspor",
+  "@exportSuccess": {
+    "description": "Export success message"
+  },
+  "exportError": "Gagal mengekspor data",
+  "@exportError": {
+    "description": "Export error message"
+  },
+  "importSuccess": "Berhasil mengimpor {count} tugas",
+  "@importSuccess": {
+    "description": "Import success message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importError": "Gagal mengimpor data",
+  "@importError": {
+    "description": "Import error message"
+  },
+  "selectFile": "Pilih File",
+  "@selectFile": {
+    "description": "Select file"
+  },
+  "cancel": "Batal",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "addNewTask": "Tambah Tugas Baru",
+  "@addNewTask": {
+    "description": "Add new task title"
+  },
+  "taskName": "Nama Tugas",
+  "@taskName": {
+    "description": "Task name field"
+  },
+  "taskNameHint": "Masukkan nama tugas",
+  "@taskNameHint": {
+    "description": "Task name hint"
+  },
+  "courseName": "Mata Kuliah",
+  "@courseName": {
+    "description": "Course name field"
+  },
+  "courseNameHint": "Masukkan nama mata kuliah",
+  "@courseNameHint": {
+    "description": "Course name hint"
+  },
+  "instructorName": "Nama Dosen",
+  "@instructorName": {
+    "description": "Instructor name field"
+  },
+  "instructorNameHint": "Masukkan nama dosen",
+  "@instructorNameHint": {
+    "description": "Instructor name hint"
+  },
+  "selectDeadline": "Pilih Batas Waktu",
+  "@selectDeadline": {
+    "description": "Select deadline prompt"
+  },
+  "selectDeadlineHint": "Pilih batas waktu tugas",
+  "@selectDeadlineHint": {
+    "description": "Select deadline hint"
+  },
+  "selectSemesterHint": "Pilih semester",
+  "@selectSemesterHint": {
+    "description": "Select semester hint"
+  },
+  "selectPeriodHint": "Pilih periode",
+  "@selectPeriodHint": {
+    "description": "Select period hint"
+  },
+  "taskNameRequired": "Nama tugas tidak boleh kosong",
+  "@taskNameRequired": {
+    "description": "Task name required error"
+  },
+  "taskNameMinLength": "Nama tugas minimal 3 karakter",
+  "@taskNameMinLength": {
+    "description": "Task name minimum length error"
+  },
+  "courseNameRequired": "Mata kuliah tidak boleh kosong",
+  "@courseNameRequired": {
+    "description": "Course name required error"
+  },
+  "courseNameMinLength": "Mata kuliah minimal 2 karakter",
+  "@courseNameMinLength": {
+    "description": "Course name minimum length error"
+  },
+  "instructorNameRequired": "Nama dosen tidak boleh kosong",
+  "@instructorNameRequired": {
+    "description": "Instructor name required error"
+  },
+  "instructorNameMinLength": "Nama dosen minimal 2 karakter",
+  "@instructorNameMinLength": {
+    "description": "Instructor name minimum length error"
+  },
+  "deadlineRequired": "Silakan pilih batas waktu tugas",
+  "@deadlineRequired": {
+    "description": "Deadline required error"
+  },
+  "semesterRequired": "Silakan pilih semester",
+  "@semesterRequired": {
+    "description": "Semester required error"
+  },
+  "periodRequired": "Silakan pilih periode",
+  "@periodRequired": {
+    "description": "Period required error"
+  },
+  "taskAddedSuccess": "Tugas berhasil ditambahkan",
+  "@taskAddedSuccess": {
+    "description": "Task added success message"
+  },
+  "taskAddedError": "Gagal menambahkan tugas",
+  "@taskAddedError": {
+    "description": "Task added error message"
+  },
+  "editTask": "Edit Tugas",
+  "@editTask": {
+    "description": "Edit task title"
+  },
+  "deleteTask": "Hapus Tugas",
+  "@deleteTask": {
+    "description": "Delete task title"
+  },
+  "deleteTaskConfirm": "Apakah Anda yakin ingin menghapus tugas \"{taskName}\"?\n\nTindakan ini tidak dapat dibatalkan.",
+  "@deleteTaskConfirm": {
+    "description": "Delete task confirmation message",
+    "placeholders": {
+      "taskName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Hapus",
+  "@delete": {
+    "description": "Delete button"
+  },
+  "taskDeletedSuccess": "Tugas berhasil dihapus",
+  "@taskDeletedSuccess": {
+    "description": "Task deleted success message"
+  },
+  "taskDeletedError": "Gagal menghapus tugas",
+  "@taskDeletedError": {
+    "description": "Task deleted error message"
+  },
+  "taskUpdatedSuccess": "Tugas berhasil diperbarui",
+  "@taskUpdatedSuccess": {
+    "description": "Task updated success message"
+  },
+  "taskUpdatedError": "Gagal memperbarui tugas",
+  "@taskUpdatedError": {
+    "description": "Task updated error message"
+  },
+  "updateTask": "Perbarui Tugas",
+  "@updateTask": {
+    "description": "Update task button"
+  },
+  "taskProgress": "Progres Tugas",
+  "@taskProgress": {
+    "description": "Task progress label"
+  },
+  "progressRangeError": "Progres harus antara 0-100%",
+  "@progressRangeError": {
+    "description": "Progress range error"
+  },
+  "notStarted": "Belum Dimulai",
+  "@notStarted": {
+    "description": "Not started status"
+  },
+  "justStarted": "Baru Dimulai",
+  "@justStarted": {
+    "description": "Just started status"
+  },
+  "inProgress": "Dalam Progres",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  "halfWay": "Setengah Jalan",
+  "@halfWay": {
+    "description": "Half way status"
+  },
+  "almostDone": "Hampir Selesai",
+  "@almostDone": {
+    "description": "Almost done status"
+  },
+  "progressUpdateInfo": "Perubahan pada deadline atau progres akan memperbarui notifikasi secara otomatis.",
+  "@progressUpdateInfo": {
+    "description": "Progress update info message"
+  },
+  "newTaskInfo": "Tugas baru akan dimulai dengan progres 0% dan dapat diperbarui nanti.",
+  "@newTaskInfo": {
+    "description": "New task info message"
+  },
+  "switchContext": "Ganti Context",
+  "@switchContext": {
+    "description": "Switch context tooltip"
+  },
+  "selectAcademicContext": "Pilih Context Akademik",
+  "@selectAcademicContext": {
+    "description": "Select academic context title"
+  },
+  "contextSwitchError": "Gagal mengganti context",
+  "@contextSwitchError": {
+    "description": "Context switch error message"
+  },
+  "chooseAcademicContext": "Pilih Context Akademik",
+  "@chooseAcademicContext": {
+    "description": "Choose academic context message"
+  },
+  "chooseContextSubtitle": "Pilih semester dan periode untuk memulai",
+  "@chooseContextSubtitle": {
+    "description": "Choose context subtitle"
+  },
+  "chooseContext": "Pilih Context",
+  "@chooseContext": {
+    "description": "Choose context button"
+  },
+  "tryAgain": "Coba Lagi",
+  "@tryAgain": {
+    "description": "Try again button"
+  },
+  "taskSummary": "Ringkasan Tugas",
+  "@taskSummary": {
+    "description": "Task summary header"
+  },
+  "total": "Total",
+  "@total": {
+    "description": "Total label"
+  },
+  "urgent": "Segera",
+  "@urgent": {
+    "description": "Urgent label"
+  },
+  "today": "Hari ini",
+  "@today": {
+    "description": "Today label"
+  },
+  "tomorrow": "Besok",
+  "@tomorrow": {
+    "description": "Tomorrow label"
+  },
+  "daysRemaining": "{count} hari lagi",
+  "@daysRemaining": {
+    "description": "Days remaining format",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "overdueByDays": "Terlambat {count} hari",
+  "@overdueByDays": {
+    "description": "Overdue by days format",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "overdueByDay": "Terlambat 1 hari",
+  "@overdueByDay": {
+    "description": "Overdue by one day"
+  },
+  "sortByDeadline": "Batas Waktu",
+  "@sortByDeadline": {
+    "description": "Sort by deadline"
+  },
+  "sortByProgress": "Progres",
+  "@sortByProgress": {
+    "description": "Sort by progress"
+  },
+  "sortByCourseName": "Mata Kuliah",
+  "@sortByCourseName": {
+    "description": "Sort by course name"
+  },
+  "sortByTaskName": "Nama Tugas",
+  "@sortByTaskName": {
+    "description": "Sort by task name"
+  },
+  "sortByDeadlineDesc": "Urutkan berdasarkan batas waktu (terdini ke terakhir)",
+  "@sortByDeadlineDesc": {
+    "description": "Sort by deadline description"
+  },
+  "sortByProgressDesc": "Urutkan berdasarkan progres (terendah ke tertinggi)",
+  "@sortByProgressDesc": {
+    "description": "Sort by progress description"
+  },
+  "sortByCourseNameDesc": "Urutkan berdasarkan nama mata kuliah (A-Z)",
+  "@sortByCourseNameDesc": {
+    "description": "Sort by course name description"
+  },
+  "sortByTaskNameDesc": "Urutkan berdasarkan nama tugas (A-Z)",
+  "@sortByTaskNameDesc": {
+    "description": "Sort by task name description"
+  },
+  "appDescription": "Aplikasi manajemen tugas untuk mahasiswa",
+  "@appDescription": {
+    "description": "App description"
+  },
+  "developerTeam": "Academic Task Manager Team",
+  "@developerTeam": {
+    "description": "Developer team name"
+  },
+  "notificationSaveError": "Gagal menyimpan pengaturan notifikasi",
+  "@notificationSaveError": {
+    "description": "Notification save error"
+  },
+  "pickDeadlineTime": "Pilih Waktu Deadline",
+  "@pickDeadlineTime": {
+    "description": "Pick deadline time"
+  },
+  "pickDeadlineDate": "Pilih Batas Waktu",
+  "@pickDeadlineDate": {
+    "description": "Pick deadline date"
+  },
+  "hour": "Jam",
+  "@hour": {
+    "description": "Hour label"
+  },
+  "minute": "Menit",
+  "@minute": {
+    "description": "Minute label"
+  },
+  "dateFieldLabel": "Tanggal Deadline",
+  "@dateFieldLabel": {
+    "description": "Date field label"
+  },
+  "dateFieldHint": "dd/mm/yyyy",
+  "@dateFieldHint": {
+    "description": "Date field hint"
+  },
+  "invalidDateFormat": "Format tanggal tidak valid",
+  "@invalidDateFormat": {
+    "description": "Invalid date format error"
+  },
+  "invalidDate": "Tanggal tidak valid",
+  "@invalidDate": {
+    "description": "Invalid date error"
+  },
+  "choose": "Pilih",
+  "@choose": {
+    "description": "Choose button"
   }
 }
