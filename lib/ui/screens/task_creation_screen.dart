@@ -210,6 +210,8 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
   /// Validate and submit the form
   Future<void> _submitForm() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -298,6 +300,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Scaffold(
