@@ -95,43 +95,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     try {
-      // Request storage permission for Android
-      if (Platform.isAndroid) {
-        final permission = await Permission.storage.request();
-        if (permission != PermissionStatus.granted) {
-          if (mounted) {
-            _showErrorSnackBar('Izin akses penyimpanan diperlukan untuk ekspor data');
-          }
-          return;
-        }
-      }
-
       // Generate JSON data
       final jsonData = await _backupService.exportToJson();
       
-      // Get Downloads directory
+      // For Android 11+ (API 30+), use Storage Access Framework (SAF)
+      // This approach works across all Android versions and doesn't require permissions
+      if (Platform.isAndroid) {
+        try {
+          // Use file_picker to save file (uses SAF internally)
+          final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-').replaceAll('.', '-');
+          final fileName = 'tugas_backup_$timestamp.json';
+          
+          // Let user choose where to save the file
+          final outputFile = await FilePicker.platform.saveFile(
+            dialogTitle: 'Simpan backup tugas',
+            fileName: fileName,
+            type: FileType.custom,
+            allowedExtensions: ['json'],
+          );
+
+          if (outputFile != null) {
+            final file = File(outputFile);
+            await file.writeAsString(jsonData);
+            
+            if (mounted) {
+              _showSuccessSnackBar('${l10n.exportSuccess}\nFile tersimpan: $fileName');
+            }
+          } else {
+            // User cancelled
+            if (mounted) {
+              _showErrorSnackBar('Ekspor dibatalkan');
+            }
+          }
+          return;
+        } catch (e) {
+          // Fallback to legacy method for older Android versions
+          debugPrint('SAF failed, trying legacy method: $e');
+        }
+      }
+      
+      // Fallback method for older Android versions or other platforms
       Directory? directory;
       String locationMessage = '';
       
       if (Platform.isAndroid) {
-        // For Android, try to use the public Downloads folder
-        directory = Directory('/storage/emulated/0/Download');
-        
-        // Check if the directory exists and is writable
-        if (!await directory.exists()) {
-          // Try alternative paths
+        // Check Android version and use appropriate method
+        try {
+          // Try to get external storage directory (works without permissions on newer Android)
           final externalDir = await getExternalStorageDirectory();
           if (externalDir != null) {
-            directory = Directory('${externalDir.path}/Download');
+            // Create Downloads folder in app's external directory
+            directory = Directory('${externalDir.path}/Downloads');
             if (!await directory.exists()) {
               await directory.create(recursive: true);
             }
+            locationMessage = 'File tersimpan di folder Downloads aplikasi';
           } else {
             // Final fallback to application documents directory
             directory = await getApplicationDocumentsDirectory();
+            locationMessage = 'File tersimpan di folder Documents aplikasi';
           }
+        } catch (e) {
+          // Ultimate fallback
+          directory = await getApplicationDocumentsDirectory();
+          locationMessage = 'File tersimpan di folder Documents aplikasi';
         }
-        locationMessage = 'File tersimpan di folder Download';
       } else if (Platform.isIOS) {
         // For iOS, use Documents directory (accessible via Files app)
         directory = await getApplicationDocumentsDirectory();

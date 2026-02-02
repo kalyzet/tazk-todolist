@@ -110,7 +110,7 @@ class _ContextSwitcherState extends State<ContextSwitcher> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Gagal mengganti context: ${e.toString()}'),
+            content: Text('Gagal mengganti konteks: ${e.toString()}'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -131,7 +131,7 @@ class _ContextSwitcherState extends State<ContextSwitcher> {
 
     return AlertDialog(
       title: Text(
-        'Pilih Context Akademik',
+        'Pilih Konteks Akademik',
         style: theme.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,
         ),

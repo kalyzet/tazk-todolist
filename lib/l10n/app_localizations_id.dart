@@ -9,7 +9,7 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
-  String get appTitle => 'Manajer Tugas Akademik';
+  String get appTitle => 'Tazk';
 
   @override
   String get semester => 'Semester';
@@ -139,6 +139,12 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get storagePermissionRequired =>
       'Izin akses penyimpanan diperlukan untuk ekspor data';
+
+  @override
+  String get exportCancelled => 'Ekspor dibatalkan';
+
+  @override
+  String get saveBackupFile => 'Simpan file backup';
 
   @override
   String importSuccess(int count) {
@@ -279,23 +285,23 @@ class AppLocalizationsId extends AppLocalizations {
       'Tugas baru akan dimulai dengan progres 0% dan dapat diperbarui nanti.';
 
   @override
-  String get switchContext => 'Ganti Context';
+  String get switchContext => 'Ganti Konteks';
 
   @override
-  String get selectAcademicContext => 'Pilih Context Akademik';
+  String get selectAcademicContext => 'Pilih Konteks Akademik';
 
   @override
-  String get contextSwitchError => 'Gagal mengganti context';
+  String get contextSwitchError => 'Gagal mengganti konteks';
 
   @override
-  String get chooseAcademicContext => 'Pilih Context Akademik';
+  String get chooseAcademicContext => 'Pilih Konteks Akademik';
 
   @override
   String get chooseContextSubtitle =>
       'Pilih semester dan periode untuk memulai';
 
   @override
-  String get chooseContext => 'Pilih Context';
+  String get chooseContext => 'Pilih Konteks';
 
   @override
   String get tryAgain => 'Coba Lagi';

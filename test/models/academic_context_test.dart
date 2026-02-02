@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:tazk/models/academic_context.dart';
+import 'package:Tazk/models/academic_context.dart';
 import 'dart:math';
 
 void main() {

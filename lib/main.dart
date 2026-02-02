@@ -25,7 +25,7 @@ class AcademicTaskManagerApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TaskProvider()),
       ],
       child: MaterialApp(
-        title: 'Manajer Tugas Akademik',
+        title: 'Tazk',
         
         // Localization setup
         localizationsDelegates: const [

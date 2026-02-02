@@ -130,7 +130,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 return IconButton(
                   icon: const Icon(Icons.swap_horiz),
                   onPressed: _showContextSwitcher,
-                  tooltip: 'Ganti Context',
+                  tooltip: 'Ganti Konteks',
                 );
               }
               return const SizedBox.shrink();
@@ -211,7 +211,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Pilih Context Akademik',
+                    'Pilih Konteks Akademik',
                     style: theme.textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
@@ -225,7 +225,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   const SizedBox(height: 24),
                   FilledButton(
                     onPressed: _showContextSwitcher,
-                    child: const Text('Pilih Context'),
+                    child: const Text('Pilih Konteks'),
                   ),
                 ],
               ),

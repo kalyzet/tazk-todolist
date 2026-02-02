@@ -3,14 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:tazk/models/academic_context.dart';
-import 'package:tazk/models/task.dart';
-import 'package:tazk/repositories/preferences_repository.dart';
-import 'package:tazk/repositories/task_repository.dart';
-import 'package:tazk/services/backup_service.dart';
-import 'package:tazk/services/notification_service.dart';
-import 'package:tazk/services/task_service.dart';
-import 'package:tazk/database/database_helper.dart';
+import 'package:Tazk/models/academic_context.dart';
+import 'package:Tazk/models/task.dart';
+import 'package:Tazk/repositories/preferences_repository.dart';
+import 'package:Tazk/repositories/task_repository.dart';
+import 'package:Tazk/services/backup_service.dart';
+import 'package:Tazk/services/notification_service.dart';
+import 'package:Tazk/services/task_service.dart';
+import 'package:Tazk/database/database_helper.dart';
 
 void main() {
   group('End-to-End Workflow Tests', () {

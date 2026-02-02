@@ -36,7 +36,7 @@ void main() {
       expect(l10n.dosen, equals('Dosen'));
 
       // Test UI elements in Indonesian (Requirement 11.1)
-      expect(l10n.appTitle, equals('Manajer Tugas Akademik'));
+      expect(l10n.appTitle, equals('Tazk'));
       expect(l10n.taskList, equals('Daftar Tugas'));
       expect(l10n.addTask, equals('Tambah Tugas'));
       expect(l10n.settings, equals('Pengaturan'));

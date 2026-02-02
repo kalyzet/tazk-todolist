@@ -1,4 +1,4 @@
-# tazk
+# Tazk
 
 Aplikasi ini merupakan aplikasi mobile berbasis **Flutter** yang dirancang untuk membantu mahasiswa dalam mengelola tugas perkuliahan secara terstruktur, kontekstual, dan efisien. Aplikasi menggunakan pendekatan **progress-based task management** dengan pengelompokan berdasarkan **semester** dan **periode akademik (UTS dan UAS)**.
 

@@ -93,7 +93,7 @@ class TaskProvider extends ChangeNotifier {
       // Load tasks for the new context
       await _loadTasksForCurrentContext();
     } catch (e) {
-      _setError('Gagal mengganti context: ${e.toString()}');
+      _setError('Gagal mengganti konteks: ${e.toString()}');
     } finally {
       _setLoading(false);
     }

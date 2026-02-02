@@ -1,4 +1,4 @@
-package com.example.tazk
+package com.example.Tazk
 
 import io.flutter.embedding.android.FlutterActivity
 

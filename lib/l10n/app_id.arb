@@ -1,6 +1,6 @@
 {
   "@@locale": "id",
-  "appTitle": "Manajer Tugas Akademik",
+  "appTitle": "Tazk",
   "@appTitle": {
     "description": "The title of the application"
   },
@@ -177,6 +177,14 @@
   "storagePermissionRequired": "Izin akses penyimpanan diperlukan untuk ekspor data",
   "@storagePermissionRequired": {
     "description": "Storage permission required message"
+  },
+  "exportCancelled": "Ekspor dibatalkan",
+  "@exportCancelled": {
+    "description": "Export cancelled message"
+  },
+  "saveBackupFile": "Simpan file backup",
+  "@saveBackupFile": {
+    "description": "Save backup file dialog title"
   },
   "importSuccess": "Berhasil mengimpor {count} tugas",
   "@importSuccess": {
@@ -364,19 +372,19 @@
   "@newTaskInfo": {
     "description": "New task info message"
   },
-  "switchContext": "Ganti Context",
+  "switchContext": "Ganti Konteks",
   "@switchContext": {
     "description": "Switch context tooltip"
   },
-  "selectAcademicContext": "Pilih Context Akademik",
+  "selectAcademicContext": "Pilih Konteks Akademik",
   "@selectAcademicContext": {
     "description": "Select academic context title"
   },
-  "contextSwitchError": "Gagal mengganti context",
+  "contextSwitchError": "Gagal mengganti konteks",
   "@contextSwitchError": {
     "description": "Context switch error message"
   },
-  "chooseAcademicContext": "Pilih Context Akademik",
+  "chooseAcademicContext": "Pilih Konteks Akademik",
   "@chooseAcademicContext": {
     "description": "Choose academic context message"
   },
@@ -384,7 +392,7 @@
   "@chooseContextSubtitle": {
     "description": "Choose context subtitle"
   },
-  "chooseContext": "Pilih Context",
+  "chooseContext": "Pilih Konteks",
   "@chooseContext": {
     "description": "Choose context button"
   },

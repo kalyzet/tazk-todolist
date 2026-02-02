@@ -1,8 +1,8 @@
 import 'package:test/test.dart';
-import 'package:tazk/models/task.dart';
-import 'package:tazk/models/academic_context.dart';
-import 'package:tazk/services/task_service.dart';
-import 'package:tazk/repositories/preferences_repository.dart';
+import 'package:Tazk/models/task.dart';
+import 'package:Tazk/models/academic_context.dart';
+import 'package:Tazk/services/task_service.dart';
+import 'package:Tazk/repositories/preferences_repository.dart';
 import 'dart:math';
 
 // Mock implementations for testing

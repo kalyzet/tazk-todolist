@@ -97,7 +97,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In id, this message translates to:
-  /// **'Manajer Tugas Akademik'**
+  /// **'Tazk'**
   String get appTitle;
 
   /// Academic semester
@@ -345,6 +345,18 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Izin akses penyimpanan diperlukan untuk ekspor data'**
   String get storagePermissionRequired;
+
+  /// Export cancelled message
+  ///
+  /// In id, this message translates to:
+  /// **'Ekspor dibatalkan'**
+  String get exportCancelled;
+
+  /// Save backup file dialog title
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan file backup'**
+  String get saveBackupFile;
 
   /// Import success message
   ///
@@ -613,25 +625,25 @@ abstract class AppLocalizations {
   /// Switch context tooltip
   ///
   /// In id, this message translates to:
-  /// **'Ganti Context'**
+  /// **'Ganti Konteks'**
   String get switchContext;
 
   /// Select academic context title
   ///
   /// In id, this message translates to:
-  /// **'Pilih Context Akademik'**
+  /// **'Pilih Konteks Akademik'**
   String get selectAcademicContext;
 
   /// Context switch error message
   ///
   /// In id, this message translates to:
-  /// **'Gagal mengganti context'**
+  /// **'Gagal mengganti konteks'**
   String get contextSwitchError;
 
   /// Choose academic context message
   ///
   /// In id, this message translates to:
-  /// **'Pilih Context Akademik'**
+  /// **'Pilih Konteks Akademik'**
   String get chooseAcademicContext;
 
   /// Choose context subtitle
@@ -643,7 +655,7 @@ abstract class AppLocalizations {
   /// Choose context button
   ///
   /// In id, this message translates to:
-  /// **'Pilih Context'**
+  /// **'Pilih Konteks'**
   String get chooseContext;
 
   /// Try again button
