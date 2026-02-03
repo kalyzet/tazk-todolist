@@ -95,99 +95,77 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     try {
+      debugPrint('Starting export process...');
+      
       // Generate JSON data
       final jsonData = await _backupService.exportToJson();
+      debugPrint('JSON data generated, length: ${jsonData.length}');
       
-      // For Android 11+ (API 30+), use Storage Access Framework (SAF)
-      // This approach works across all Android versions and doesn't require permissions
-      if (Platform.isAndroid) {
-        try {
-          // Use file_picker to save file (uses SAF internally)
-          final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-').replaceAll('.', '-');
-          final fileName = 'tugas_backup_$timestamp.json';
-          
-          // Let user choose where to save the file
-          final outputFile = await FilePicker.platform.saveFile(
-            dialogTitle: 'Simpan backup tugas',
-            fileName: fileName,
-            type: FileType.custom,
-            allowedExtensions: ['json'],
-          );
-
-          if (outputFile != null) {
-            final file = File(outputFile);
-            await file.writeAsString(jsonData);
-            
-            if (mounted) {
-              _showSuccessSnackBar('${l10n.exportSuccess}\nFile tersimpan: $fileName');
-            }
-          } else {
-            // User cancelled
-            if (mounted) {
-              _showErrorSnackBar('Ekspor dibatalkan');
-            }
-          }
-          return;
-        } catch (e) {
-          // Fallback to legacy method for older Android versions
-          debugPrint('SAF failed, trying legacy method: $e');
-        }
-      }
+      // Create filename with timestamp
+      final now = DateTime.now();
+      final timestamp = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
+      final fileName = 'tugas_backup_$timestamp.json';
+      debugPrint('Filename: $fileName');
       
-      // Fallback method for older Android versions or other platforms
       Directory? directory;
       String locationMessage = '';
       
       if (Platform.isAndroid) {
-        // Check Android version and use appropriate method
+        debugPrint('Platform: Android');
+        // For Android, use external storage directory (works without special permissions)
         try {
-          // Try to get external storage directory (works without permissions on newer Android)
           final externalDir = await getExternalStorageDirectory();
+          debugPrint('External storage directory: ${externalDir?.path}');
+          
           if (externalDir != null) {
-            // Create Downloads folder in app's external directory
-            directory = Directory('${externalDir.path}/Downloads');
+            // Create Backups folder in app's external directory
+            directory = Directory('${externalDir.path}/Backups');
             if (!await directory.exists()) {
+              debugPrint('Creating Backups directory...');
               await directory.create(recursive: true);
             }
-            locationMessage = 'File tersimpan di folder Downloads aplikasi';
+            debugPrint('Using directory: ${directory.path}');
+            locationMessage = 'File tersimpan di folder Backups aplikasi';
           } else {
-            // Final fallback to application documents directory
-            directory = await getApplicationDocumentsDirectory();
-            locationMessage = 'File tersimpan di folder Documents aplikasi';
+            throw Exception('External storage not available');
           }
         } catch (e) {
-          // Ultimate fallback
+          debugPrint('External storage failed: $e');
+          // Fallback: Use application documents directory
           directory = await getApplicationDocumentsDirectory();
+          debugPrint('Fallback to documents directory: ${directory.path}');
           locationMessage = 'File tersimpan di folder Documents aplikasi';
         }
-      } else if (Platform.isIOS) {
-        // For iOS, use Documents directory (accessible via Files app)
-        directory = await getApplicationDocumentsDirectory();
-        locationMessage = 'File tersimpan di Documents aplikasi (dapat diakses via Files app)';
       } else {
-        // For other platforms, try Downloads directory
-        try {
-          directory = await getDownloadsDirectory();
-          locationMessage = 'File tersimpan di folder Downloads';
-        } catch (e) {
-          // Fallback to documents directory
-          directory = await getApplicationDocumentsDirectory();
-          locationMessage = 'File tersimpan di folder Documents';
-        }
+        debugPrint('Platform: Other');
+        // For other platforms, use documents directory
+        directory = await getApplicationDocumentsDirectory();
+        locationMessage = 'File tersimpan di folder Documents';
       }
-      
-      final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-').replaceAll('.', '-');
-      final fileName = 'tugas_backup_$timestamp.json';
-      final filePath = '${directory!.path}/$fileName';
       
       // Write file
+      final filePath = '${directory!.path}/$fileName';
+      debugPrint('Writing file to: $filePath');
+      
       final file = File(filePath);
       await file.writeAsString(jsonData);
+      debugPrint('File written successfully');
       
-      if (mounted) {
-        _showSuccessSnackBar('${l10n.exportSuccess}\n$locationMessage\nNama file: $fileName');
+      // Verify file was created
+      if (await file.exists()) {
+        final fileSize = await file.length();
+        debugPrint('File exists, size: $fileSize bytes');
+        
+        if (mounted) {
+          _showSuccessSnackBar(l10n.exportSuccess);
+        }
+      } else {
+        debugPrint('File does not exist after writing');
+        throw Exception('File gagal dibuat');
       }
+      
     } catch (e) {
+      debugPrint('Export error: $e');
       if (mounted) {
         _showErrorSnackBar('${l10n.exportError}: ${e.toString()}');
       }

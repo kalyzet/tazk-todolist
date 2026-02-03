@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io';
 import 'l10n/app_localizations.dart';
 import 'models/academic_context.dart';
 import 'models/task.dart';
@@ -12,6 +14,12 @@ import 'ui/screens/task_editing_screen.dart';
 import 'ui/screens/settings_screen.dart';
 
 void main() {
+  // Initialize sqflite for desktop platforms
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+  
   runApp(const AcademicTaskManagerApp());
 }
 

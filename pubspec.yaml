@@ -111,4 +111,10 @@ flutter:
 
 flutter_launcher_icons:
     android: true
-    image_path: 'assets/icon/icon.png'
+
+    # WAJIB ADA (buat plugin, bukan buat hasil)
+    image_path: assets/icon/icon_fg.png
+
+    # ADAPTIVE YANG SEBENARNYA DIPAKAI
+    adaptive_icon_foreground: assets/icon/icon_fg.png
+    adaptive_icon_background: '#CEEBFC'
