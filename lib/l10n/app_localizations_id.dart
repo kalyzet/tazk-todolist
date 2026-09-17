@@ -396,4 +396,19 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get choose => 'Pilih';
+
+  @override
+  String get selectSemesterTitle => 'Pilih Semester';
+
+  @override
+  String get selectPeriodTitle => 'Pilih Periode';
+
+  @override
+  String get semesterLabel => 'Semester';
+
+  @override
+  String get periodLabel => 'Periode';
+
+  @override
+  String get deadlineLabel => 'Batas Waktu';
 }

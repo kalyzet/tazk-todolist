@@ -521,5 +521,25 @@
   "choose": "Pilih",
   "@choose": {
     "description": "Choose button"
+  },
+  "selectSemesterTitle": "Pilih Semester",
+  "@selectSemesterTitle": {
+    "description": "Semester selection dialog title"
+  },
+  "selectPeriodTitle": "Pilih Periode",
+  "@selectPeriodTitle": {
+    "description": "Period selection dialog title"
+  },
+  "semesterLabel": "Semester",
+  "@semesterLabel": {
+    "description": "Semester field label"
+  },
+  "periodLabel": "Periode",
+  "@periodLabel": {
+    "description": "Period field label"
+  },
+  "deadlineLabel": "Batas Waktu",
+  "@deadlineLabel": {
+    "description": "Deadline field label"
   }
 }

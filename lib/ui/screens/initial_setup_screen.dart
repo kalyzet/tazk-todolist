@@ -22,7 +22,6 @@ class InitialSetupScreen extends StatefulWidget {
 class _InitialSetupScreenState extends State<InitialSetupScreen> {
   String? _selectedSemester;
   String? _selectedPeriod;
-  final _semesterController = TextEditingController();
   String? _semesterError;
   String? _periodError;
 
@@ -37,12 +36,6 @@ class _InitialSetupScreenState extends State<InitialSetupScreen> {
     'Semester 7',
     'Semester 8',
   ];
-
-  @override
-  void dispose() {
-    _semesterController.dispose();
-    super.dispose();
-  }
 
   /// Validates the form and shows appropriate error messages
   bool _validateForm() {

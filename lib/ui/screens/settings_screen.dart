@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/backup_service.dart';
 import '../../services/notification_service.dart';
@@ -25,9 +24,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final BackupService _backupService = BackupService();
-  final NotificationService _notificationService = NotificationService();
-  final PreferencesRepository _preferencesRepository = PreferencesRepository();
+  // Use singleton instances instead of creating new ones
+  final _backupService = BackupService();
+  final _notificationService = NotificationService();
+  final _preferencesRepository = PreferencesRepository();
   
   bool _notificationsEnabled = true;
   bool _isLoading = false;
@@ -48,7 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         });
       }
     } catch (e) {
-      // Use default value on error
       if (mounted) {
         setState(() {
           _notificationsEnabled = true;
@@ -64,108 +63,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     try {
-      // Save preference to storage
       await _preferencesRepository.saveNotificationsEnabled(enabled);
-      
-      // Update notification service
       _notificationService.setNotificationsEnabled(enabled);
       
-      // Request permissions if enabling notifications
       if (enabled) {
         await _notificationService.requestPermissions();
       }
     } catch (e) {
-      // Revert state on error
       setState(() {
         _notificationsEnabled = !enabled;
       });
       
       if (mounted) {
-        _showErrorSnackBar('Gagal menyimpan pengaturan notifikasi');
+        _showErrorSnackBar(l10n.notificationSaveError);
       }
     }
   }
 
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
+
   /// Export data to JSON file
   Future<void> _exportData() async {
-    final l10n = AppLocalizations.of(context)!;
-    
     setState(() {
       _isLoading = true;
     });
 
     try {
-      debugPrint('Starting export process...');
-      
-      // Generate JSON data
       final jsonData = await _backupService.exportToJson();
-      debugPrint('JSON data generated, length: ${jsonData.length}');
       
-      // Create filename with timestamp
       final now = DateTime.now();
       final timestamp = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
       final fileName = 'tugas_backup_$timestamp.json';
-      debugPrint('Filename: $fileName');
       
-      Directory? directory;
-      String locationMessage = '';
-      
-      if (Platform.isAndroid) {
-        debugPrint('Platform: Android');
-        // For Android, use external storage directory (works without special permissions)
-        try {
-          final externalDir = await getExternalStorageDirectory();
-          debugPrint('External storage directory: ${externalDir?.path}');
-          
-          if (externalDir != null) {
-            // Create Backups folder in app's external directory
-            directory = Directory('${externalDir.path}/Backups');
-            if (!await directory.exists()) {
-              debugPrint('Creating Backups directory...');
-              await directory.create(recursive: true);
-            }
-            debugPrint('Using directory: ${directory.path}');
-            locationMessage = 'File tersimpan di folder Backups aplikasi';
-          } else {
-            throw Exception('External storage not available');
-          }
-        } catch (e) {
-          debugPrint('External storage failed: $e');
-          // Fallback: Use application documents directory
-          directory = await getApplicationDocumentsDirectory();
-          debugPrint('Fallback to documents directory: ${directory.path}');
-          locationMessage = 'File tersimpan di folder Documents aplikasi';
-        }
-      } else {
-        debugPrint('Platform: Other');
-        // For other platforms, use documents directory
-        directory = await getApplicationDocumentsDirectory();
-        locationMessage = 'File tersimpan di folder Documents';
-      }
-      
-      // Write file
-      final filePath = '${directory!.path}/$fileName';
-      debugPrint('Writing file to: $filePath');
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$fileName';
       
       final file = File(filePath);
       await file.writeAsString(jsonData);
-      debugPrint('File written successfully');
       
-      // Verify file was created
       if (await file.exists()) {
-        final fileSize = await file.length();
-        debugPrint('File exists, size: $fileSize bytes');
-        
         if (mounted) {
           _showSuccessSnackBar(l10n.exportSuccess);
         }
       } else {
-        debugPrint('File does not exist after writing');
         throw Exception('File gagal dibuat');
       }
       
     } catch (e) {
-      debugPrint('Export error: $e');
       if (mounted) {
         _showErrorSnackBar('${l10n.exportError}: ${e.toString()}');
       }
@@ -180,10 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   /// Import data from JSON file
   Future<void> _importData() async {
-    final l10n = AppLocalizations.of(context)!;
-    
     try {
-      // Pick file
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
@@ -191,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
 
       if (result == null || result.files.isEmpty) {
-        return; // User cancelled
+        return;
       }
 
       setState(() {
@@ -201,7 +142,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final file = File(result.files.first.path!);
       final jsonData = await file.readAsString();
 
-      // Import data
       final importedCount = await _backupService.importFromJson(jsonData);
       
       if (mounted) {
@@ -220,7 +160,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// Show success snack bar
   void _showSuccessSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -231,7 +170,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// Show error snack bar
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -244,7 +182,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -256,28 +193,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                // Notifications Section
                 _buildSectionHeader(l10n.notifications, Icons.notifications),
                 const SizedBox(height: 8),
-                _buildNotificationTile(l10n, theme),
+                _buildNotificationTile(theme),
                 const SizedBox(height: 24),
 
-                // Backup Section
                 _buildSectionHeader(l10n.backup, Icons.backup),
                 const SizedBox(height: 8),
-                _buildBackupTiles(l10n, theme),
+                _buildBackupTiles(theme),
                 const SizedBox(height: 24),
 
-                // About Section
                 _buildSectionHeader(l10n.about, Icons.info),
                 const SizedBox(height: 8),
-                _buildAboutTiles(l10n, theme),
+                _buildAboutTiles(theme),
               ],
             ),
     );
   }
 
-  /// Build section header
   Widget _buildSectionHeader(String title, IconData icon) {
     final theme = Theme.of(context);
     
@@ -300,8 +233,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// Build notification toggle tile
-  Widget _buildNotificationTile(AppLocalizations l10n, ThemeData theme) {
+  Widget _buildNotificationTile(ThemeData theme) {
     return Card(
       child: SwitchListTile(
         title: Text(l10n.enableNotifications),
@@ -316,8 +248,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// Build backup tiles
-  Widget _buildBackupTiles(AppLocalizations l10n, ThemeData theme) {
+  Widget _buildBackupTiles(ThemeData theme) {
     return Card(
       child: Column(
         children: [
@@ -347,8 +278,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// Build about tiles
-  Widget _buildAboutTiles(AppLocalizations l10n, ThemeData theme) {
+  Widget _buildAboutTiles(ThemeData theme) {
     return Card(
       child: Column(
         children: [
@@ -367,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: theme.colorScheme.primary,
             ),
             title: Text(l10n.developer),
-            subtitle: const Text('Kalyzet Team'),
+            subtitle: Text(l10n.developerTeam),
           ),
           const Divider(height: 1),
           ListTile(
@@ -376,7 +306,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: theme.colorScheme.primary,
             ),
             title: Text(l10n.appTitle),
-            subtitle: const Text('Aplikasi manajemen tugas untuk mahasiswa'),
+            subtitle: Text(l10n.appDescription),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 import '../models/task.dart';
-import 'deadline_service.dart';
 
 /// Service for managing task deadline notifications
 /// 
@@ -12,7 +13,6 @@ class NotificationService {
   NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
-  final DeadlineService _deadlineService = DeadlineService();
   bool _isInitialized = false;
   bool _notificationsEnabled = true;
 
@@ -33,6 +33,7 @@ class NotificationService {
     );
 
     await _notifications.initialize(initSettings);
+    tz.initializeTimeZones();
     _isInitialized = true;
   }
 
@@ -68,7 +69,7 @@ class NotificationService {
         await _notifications.zonedSchedule(
           notificationId,
           'Tugas Mendekati Deadline',
-          '${task.name} - ${daysBeforeDeadline} hari lagi',
+          '${task.name} - $daysBeforeDeadline hari lagi',
           _convertToTZDateTime(notificationDate),
           const NotificationDetails(
             android: AndroidNotificationDetails(
@@ -152,11 +153,17 @@ class NotificationService {
     return taskId * 10 + daysBeforeDeadline;
   }
 
-  /// Convert DateTime to TZDateTime (placeholder - would use timezone package in real app)
-  dynamic _convertToTZDateTime(DateTime dateTime) {
-    // In a real implementation, this would use the timezone package
-    // For now, return the DateTime as-is since the notification plugin
-    // can handle DateTime objects in some contexts
-    return dateTime;
+  /// Convert DateTime to TZDateTime using local timezone
+  tz.TZDateTime _convertToTZDateTime(DateTime dateTime) {
+    final localLocation = tz.local;
+    return tz.TZDateTime(
+      localLocation,
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      dateTime.hour,
+      dateTime.minute,
+      dateTime.second,
+    );
   }
 }

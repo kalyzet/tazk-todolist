@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/task.dart';
-import '../../models/academic_context.dart';
 import '../../providers/task_provider.dart';
 import '../../utils/date_formatter.dart';
 
@@ -125,6 +124,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
   /// Show semester selection dialog
   Future<void> _selectSemester() async {
+    final l10n = AppLocalizations.of(context)!;
     final semesters = [
       'Semester 1',
       'Semester 2',
@@ -139,7 +139,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
     final selected = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Pilih Semester'),
+        title: Text(l10n.selectSemesterTitle),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
@@ -158,7 +158,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),
@@ -173,15 +173,16 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
 
   /// Show period selection dialog
   Future<void> _selectPeriod() async {
+    final l10n = AppLocalizations.of(context)!;
     final periods = [
-      {'value': 'UTS', 'label': 'UTS (Ujian Tengah Semester)'},
-      {'value': 'UAS', 'label': 'UAS (Ujian Akhir Semester)'},
+      {'value': 'UTS', 'label': l10n.utsLong},
+      {'value': 'UAS', 'label': l10n.uasLong},
     ];
 
     final selected = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Pilih Periode'),
+        title: Text(l10n.selectPeriodTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: periods.map((period) {
@@ -195,7 +196,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),
@@ -398,7 +399,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
               onTap: _isLoading ? null : _selectDeadline,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Batas Waktu *',
+                  labelText: '${l10n.deadline} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.schedule),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
@@ -406,7 +407,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                 ),
                 child: Text(
                   _selectedDeadline == null
-                      ? 'Pilih batas waktu tugas'
+                      ? l10n.selectDeadlineHint
                       : _formatDeadline(_selectedDeadline!),
                   style: TextStyle(
                     color: _selectedDeadline == null
@@ -424,14 +425,14 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
               onTap: _isLoading ? null : _selectSemester,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Semester *',
+                  labelText: '${l10n.semester} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.school),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
                   errorText: _selectedSemester == null ? null : null,
                 ),
                 child: Text(
-                  _selectedSemester ?? 'Pilih semester',
+                  _selectedSemester ?? l10n.selectSemesterHint,
                   style: TextStyle(
                     color: _selectedSemester == null
                         ? theme.hintColor
@@ -448,7 +449,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
               onTap: _isLoading ? null : _selectPeriod,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Periode *',
+                  labelText: '${l10n.periodLabel} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.event),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
@@ -456,10 +457,10 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                 ),
                 child: Text(
                   _selectedPeriod == null
-                      ? 'Pilih periode'
+                      ? l10n.selectPeriodHint
                       : _selectedPeriod == 'UTS'
-                          ? 'UTS (Ujian Tengah Semester)'
-                          : 'UAS (Ujian Akhir Semester)',
+                          ? l10n.utsLong
+                          : l10n.uasLong,
                   style: TextStyle(
                     color: _selectedPeriod == null
                         ? theme.hintColor
@@ -491,7 +492,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Tugas baru akan dimulai dengan progres 0% dan dapat diperbarui nanti.',
+                      l10n.newTaskInfo,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -517,7 +518,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Tambah Tugas'),
+                    : Text(l10n.addTask),
               ),
             ),
             
@@ -528,7 +529,7 @@ class _TaskCreationScreenState extends State<TaskCreationScreen> {
               height: 48,
               child: OutlinedButton(
                 onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-                child: const Text('Batal'),
+                child: Text(l10n.cancel),
               ),
             ),
           ],

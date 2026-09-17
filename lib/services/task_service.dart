@@ -1,6 +1,7 @@
 import '../models/task.dart';
 import '../models/academic_context.dart';
 import '../repositories/task_repository.dart';
+import 'notification_service.dart';
 
 /// Service class for managing tasks with business logic and validation
 class TaskService {
@@ -39,16 +40,15 @@ class TaskService {
       updatedAt: DateTime.now(),
     );
 
-    // Validate progress range (should be 0 for new tasks)
-    if (!newTask.validateProgressRange()) {
-      throw ArgumentError('Progress harus antara 0-100%');
-    }
-
     // Insert task into database
     final taskId = await _taskRepository.insert(newTask);
     
+    // Schedule notifications for the new task
+    final createdTask = newTask.copyWith(id: taskId);
+    await NotificationService().scheduleTaskNotifications(createdTask);
+    
     // Return the created task with the generated ID
-    return newTask.copyWith(id: taskId);
+    return createdTask;
   }
 
   /// Updates an existing task with notification rescheduling logic
@@ -90,9 +90,8 @@ class TaskService {
       throw StateError('Task dengan ID ${task.id} tidak ditemukan');
     }
 
-    // TODO: Handle notification rescheduling when NotificationService is implemented
-    // - Cancel existing notifications for this task
-    // - Reschedule notifications if progress < 100% and deadline is in future
+    // Reschedule notifications for the updated task
+    await NotificationService().rescheduleTaskNotifications(updatedTask);
     
     return updatedTask;
   }
@@ -109,7 +108,8 @@ class TaskService {
       throw StateError('Task dengan ID $taskId tidak ditemukan');
     }
 
-    // TODO: Cancel all notifications for this task when NotificationService is implemented
+    // Cancel all notifications for this task
+    await NotificationService().cancelTaskNotifications(taskId);
     
     // Delete task from database
     final rowsAffected = await _taskRepository.delete(taskId);

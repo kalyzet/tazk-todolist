@@ -7,6 +7,7 @@ import 'l10n/app_localizations.dart';
 import 'models/academic_context.dart';
 import 'models/task.dart';
 import 'providers/task_provider.dart';
+import 'services/notification_service.dart';
 import 'ui/screens/initial_setup_screen.dart';
 import 'ui/screens/task_list_screen.dart';
 import 'ui/screens/task_creation_screen.dart';
@@ -110,6 +111,9 @@ class _AppInitializerState extends State<AppInitializer> {
     try {
       final taskProvider = Provider.of<TaskProvider>(context, listen: false);
       await taskProvider.initialize();
+
+      // Initialize notification service
+      await NotificationService().initialize();
       
       // Check if we have existing context or tasks
       _hasExistingData = taskProvider.hasContext;

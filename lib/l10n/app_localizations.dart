@@ -831,6 +831,36 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Pilih'**
   String get choose;
+
+  /// Semester selection dialog title
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Semester'**
+  String get selectSemesterTitle;
+
+  /// Period selection dialog title
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Periode'**
+  String get selectPeriodTitle;
+
+  /// Semester field label
+  ///
+  /// In id, this message translates to:
+  /// **'Semester'**
+  String get semesterLabel;
+
+  /// Period field label
+  ///
+  /// In id, this message translates to:
+  /// **'Periode'**
+  String get periodLabel;
+
+  /// Deadline field label
+  ///
+  /// In id, this message translates to:
+  /// **'Batas Waktu'**
+  String get deadlineLabel;
 }
 
 class _AppLocalizationsDelegate

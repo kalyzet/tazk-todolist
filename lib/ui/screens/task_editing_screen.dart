@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/task.dart';
-import '../../models/academic_context.dart';
 import '../../providers/task_provider.dart';
+import '../../utils/date_formatter.dart';
 
 /// Task editing screen with comprehensive update functionality
 /// 
@@ -52,7 +52,6 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     super.dispose();
   }
 
-  /// Initialize form with existing task values
   void _initializeForm() {
     _nameController.text = widget.task.name;
     _courseController.text = widget.task.courseName;
@@ -63,24 +62,24 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     _progress = widget.task.progress.toDouble();
   }
 
-  /// Show date picker for deadline selection
   Future<void> _selectDeadline() async {
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final tomorrow = DateTime(now.year, now.month, now.day + 1);
     
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDeadline ?? tomorrow,
-      firstDate: tomorrow, // Prevent past date selection for new deadlines
+      firstDate: tomorrow,
       lastDate: DateTime(now.year + 2),
       locale: const Locale('id', ''),
-      helpText: 'Pilih Batas Waktu',
-      cancelText: 'Batal',
-      confirmText: 'Pilih',
-      fieldLabelText: 'Tanggal Deadline',
-      fieldHintText: 'dd/mm/yyyy',
-      errorFormatText: 'Format tanggal tidak valid',
-      errorInvalidText: 'Tanggal tidak valid',
+      helpText: l10n.pickDeadlineDate,
+      cancelText: l10n.cancel,
+      confirmText: l10n.choose,
+      fieldLabelText: l10n.dateFieldLabel,
+      fieldHintText: l10n.dateFieldHint,
+      errorFormatText: l10n.invalidDateFormat,
+      errorInvalidText: l10n.invalidDate,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -94,15 +93,14 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     );
 
     if (selectedDate != null) {
-      // Show time picker for more precise deadline
       final selectedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(_selectedDeadline ?? DateTime.now()),
-        helpText: 'Pilih Waktu Deadline',
-        cancelText: 'Batal',
-        confirmText: 'Pilih',
-        hourLabelText: 'Jam',
-        minuteLabelText: 'Menit',
+        helpText: l10n.pickDeadlineTime,
+        cancelText: l10n.cancel,
+        confirmText: l10n.choose,
+        hourLabelText: l10n.hour,
+        minuteLabelText: l10n.minute,
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -129,8 +127,8 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Show semester selection dialog
   Future<void> _selectSemester() async {
+    final l10n = AppLocalizations.of(context)!;
     final semesters = [
       'Semester 1',
       'Semester 2',
@@ -145,7 +143,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     final selected = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Pilih Semester'),
+        title: Text(l10n.selectSemesterTitle),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
@@ -164,7 +162,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),
@@ -177,17 +175,17 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Show period selection dialog
   Future<void> _selectPeriod() async {
+    final l10n = AppLocalizations.of(context)!;
     final periods = [
-      {'value': 'UTS', 'label': 'UTS (Ujian Tengah Semester)'},
-      {'value': 'UAS', 'label': 'UAS (Ujian Akhir Semester)'},
+      {'value': 'UTS', 'label': l10n.utsLong},
+      {'value': 'UAS', 'label': l10n.uasLong},
     ];
 
     final selected = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Pilih Periode'),
+        title: Text(l10n.selectPeriodTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: periods.map((period) {
@@ -201,7 +199,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),
@@ -214,27 +212,24 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Show delete confirmation dialog
   Future<void> _showDeleteConfirmation() async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Hapus Tugas'),
-        content: Text(
-          'Apakah Anda yakin ingin menghapus tugas "${widget.task.name}"?\n\n'
-          'Tindakan ini tidak dapat dibatalkan.',
-        ),
+        title: Text(l10n.deleteTask),
+        content: Text(l10n.deleteTaskConfirm(widget.task.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Batal'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.red,
             ),
-            child: const Text('Hapus'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -245,8 +240,8 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Delete the task
   Future<void> _deleteTask() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
     });
@@ -258,13 +253,11 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
       if (success) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Tugas berhasil dihapus'),
+            SnackBar(
+              content: Text(l10n.taskDeletedSuccess),
               backgroundColor: Colors.green,
             ),
           );
-          
-          // Navigate back to task list
           Navigator.of(context).pop();
         }
       } else {
@@ -274,7 +267,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
       }
     } catch (e) {
       if (mounted) {
-        _showErrorSnackBar('Gagal menghapus tugas: ${e.toString()}');
+        _showErrorSnackBar('${l10n.taskDeletedError}: ${e.toString()}');
       }
     } finally {
       if (mounted) {
@@ -285,31 +278,30 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Validate and submit the form
   Future<void> _submitForm() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    // Additional validation for required selections
     if (_selectedDeadline == null) {
-      _showErrorSnackBar('Silakan pilih batas waktu tugas');
+      _showErrorSnackBar(l10n.deadlineRequired);
       return;
     }
 
     if (_selectedSemester == null || _selectedSemester!.isEmpty) {
-      _showErrorSnackBar('Silakan pilih semester');
+      _showErrorSnackBar(l10n.semesterRequired);
       return;
     }
 
     if (_selectedPeriod == null || _selectedPeriod!.isEmpty) {
-      _showErrorSnackBar('Silakan pilih periode');
+      _showErrorSnackBar(l10n.periodRequired);
       return;
     }
 
-    // Validate progress range (0-100)
     if (_progress < 0 || _progress > 100) {
-      _showErrorSnackBar('Progres harus antara 0-100%');
+      _showErrorSnackBar(l10n.progressRangeError);
       return;
     }
 
@@ -318,7 +310,6 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     });
 
     try {
-      // Create updated task object
       final updatedTask = widget.task.copyWith(
         name: _nameController.text.trim(),
         courseName: _courseController.text.trim(),
@@ -329,32 +320,27 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
         progress: _progress.round(),
       );
 
-      // Update task through provider
       final taskProvider = Provider.of<TaskProvider>(context, listen: false);
       final result = await taskProvider.updateTask(updatedTask);
 
       if (result != null) {
-        // Show success message
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Tugas berhasil diperbarui'),
+            SnackBar(
+              content: Text(l10n.taskUpdatedSuccess),
               backgroundColor: Colors.green,
             ),
           );
-          
-          // Navigate back to task list
           Navigator.of(context).pop();
         }
       } else {
-        // Show error from provider
         if (mounted && taskProvider.errorMessage != null) {
           _showErrorSnackBar(taskProvider.errorMessage!);
         }
       }
     } catch (e) {
       if (mounted) {
-        _showErrorSnackBar('Gagal memperbarui tugas: ${e.toString()}');
+        _showErrorSnackBar('${l10n.taskUpdatedError}: ${e.toString()}');
       }
     } finally {
       if (mounted) {
@@ -365,7 +351,6 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     }
   }
 
-  /// Show error message in snackbar
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -375,40 +360,27 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
     );
   }
 
-  /// Format deadline for display
   String _formatDeadline(DateTime deadline) {
-    final months = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
-    
-    final day = deadline.day.toString().padLeft(2, '0');
-    final month = months[deadline.month - 1];
-    final year = deadline.year;
-    final hour = deadline.hour.toString().padLeft(2, '0');
-    final minute = deadline.minute.toString().padLeft(2, '0');
-    
-    return '$day $month $year, $hour:$minute';
+    return IndonesianDateFormatter.formatLong(deadline);
   }
 
-  /// Get progress status text
   String _getProgressStatusText() {
+    final l10n = AppLocalizations.of(context)!;
     if (_progress == 100) {
-      return 'Selesai';
+      return l10n.completed;
     } else if (_progress >= 75) {
-      return 'Hampir Selesai';
+      return l10n.almostDone;
     } else if (_progress >= 50) {
-      return 'Setengah Jalan';
+      return l10n.halfWay;
     } else if (_progress >= 25) {
-      return 'Dalam Progres';
+      return l10n.inProgress;
     } else if (_progress > 0) {
-      return 'Baru Dimulai';
+      return l10n.justStarted;
     } else {
-      return 'Belum Dimulai';
+      return l10n.notStarted;
     }
   }
 
-  /// Get progress color based on value
   Color _getProgressColor() {
     if (_progress == 100) {
       return Colors.green;
@@ -425,17 +397,17 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Tugas'),
+        title: Text(l10n.editTask),
         actions: [
-          // Delete button
           IconButton(
             onPressed: _isLoading ? null : _showDeleteConfirmation,
             icon: const Icon(Icons.delete),
-            tooltip: 'Hapus Tugas',
+            tooltip: l10n.deleteTask,
           ),
           if (_isLoading)
             const Padding(
@@ -471,7 +443,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Progres Tugas',
+                        l10n.taskProgress,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.primary,
@@ -500,7 +472,6 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                   
                   const SizedBox(height: 16),
                   
-                  // Progress slider
                   Row(
                     children: [
                       Text(
@@ -512,7 +483,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                           value: _progress,
                           min: 0,
                           max: 100,
-                          divisions: 20, // 5% increments
+                          divisions: 20,
                           label: '${_progress.round()}%',
                           onChanged: _isLoading ? null : (value) {
                             setState(() {
@@ -528,7 +499,6 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                     ],
                   ),
                   
-                  // Progress percentage display
                   Center(
                     child: Text(
                       '${_progress.round()}%',
@@ -547,19 +517,19 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
             // Task name field
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nama Tugas *',
-                hintText: 'Masukkan nama tugas',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.assignment),
+              decoration: InputDecoration(
+                labelText: '${l10n.taskName} *',
+                hintText: l10n.taskNameHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.assignment),
               ),
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Nama tugas tidak boleh kosong';
+                  return l10n.taskNameRequired;
                 }
                 if (value.trim().length < 3) {
-                  return 'Nama tugas minimal 3 karakter';
+                  return l10n.taskNameMinLength;
                 }
                 return null;
               },
@@ -570,19 +540,19 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
             // Course name field
             TextFormField(
               controller: _courseController,
-              decoration: const InputDecoration(
-                labelText: 'Mata Kuliah *',
-                hintText: 'Masukkan nama mata kuliah',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.book),
+              decoration: InputDecoration(
+                labelText: '${l10n.courseName} *',
+                hintText: l10n.courseNameHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.book),
               ),
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Mata kuliah tidak boleh kosong';
+                  return l10n.courseNameRequired;
                 }
                 if (value.trim().length < 2) {
-                  return 'Mata kuliah minimal 2 karakter';
+                  return l10n.courseNameMinLength;
                 }
                 return null;
               },
@@ -593,19 +563,19 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
             // Instructor name field
             TextFormField(
               controller: _instructorController,
-              decoration: const InputDecoration(
-                labelText: 'Nama Dosen *',
-                hintText: 'Masukkan nama dosen',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person),
+              decoration: InputDecoration(
+                labelText: '${l10n.instructorName} *',
+                hintText: l10n.instructorNameHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.person),
               ),
               textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Nama dosen tidak boleh kosong';
+                  return l10n.instructorNameRequired;
                 }
                 if (value.trim().length < 2) {
-                  return 'Nama dosen minimal 2 karakter';
+                  return l10n.instructorNameMinLength;
                 }
                 return null;
               },
@@ -618,15 +588,14 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
               onTap: _isLoading ? null : _selectDeadline,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Batas Waktu *',
+                  labelText: '${l10n.deadline} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.schedule),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
-                  errorText: _selectedDeadline == null ? null : null,
                 ),
                 child: Text(
                   _selectedDeadline == null
-                      ? 'Pilih batas waktu tugas'
+                      ? l10n.selectDeadlineHint
                       : _formatDeadline(_selectedDeadline!),
                   style: TextStyle(
                     color: _selectedDeadline == null
@@ -644,14 +613,13 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
               onTap: _isLoading ? null : _selectSemester,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Semester *',
+                  labelText: '${l10n.semester} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.school),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
-                  errorText: _selectedSemester == null ? null : null,
                 ),
                 child: Text(
-                  _selectedSemester ?? 'Pilih semester',
+                  _selectedSemester ?? l10n.selectSemesterHint,
                   style: TextStyle(
                     color: _selectedSemester == null
                         ? theme.hintColor
@@ -668,18 +636,17 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
               onTap: _isLoading ? null : _selectPeriod,
               child: InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Periode *',
+                  labelText: '${l10n.periodLabel} *',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.event),
                   suffixIcon: const Icon(Icons.arrow_drop_down),
-                  errorText: _selectedPeriod == null ? null : null,
                 ),
                 child: Text(
                   _selectedPeriod == null
-                      ? 'Pilih periode'
+                      ? l10n.selectPeriodHint
                       : _selectedPeriod == 'UTS'
-                          ? 'UTS (Ujian Tengah Semester)'
-                          : 'UAS (Ujian Akhir Semester)',
+                          ? l10n.utsLong
+                          : l10n.uasLong,
                   style: TextStyle(
                     color: _selectedPeriod == null
                         ? theme.hintColor
@@ -711,7 +678,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Perubahan pada deadline atau progres akan memperbarui notifikasi secara otomatis.',
+                      l10n.progressUpdateInfo,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -737,7 +704,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Perbarui Tugas'),
+                    : Text(l10n.updateTask),
               ),
             ),
             
@@ -748,7 +715,7 @@ class _TaskEditingScreenState extends State<TaskEditingScreen> {
               height: 48,
               child: OutlinedButton(
                 onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-                child: const Text('Batal'),
+                child: Text(l10n.cancel),
               ),
             ),
           ],
