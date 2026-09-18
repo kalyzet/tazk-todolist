@@ -33,10 +33,11 @@
 
 ## 🟡 MODERATE — Bug & Konsistensi
 
-- [x] **[5] Fix export path di `settings_screen.dart`**
+- [x] **[5] Fix export ke folder Download via `FilePicker.saveFile()`**
   - File: `lib/ui/screens/settings_screen.dart`
-  - Gunakan `getApplicationDocumentsDirectory()` secara konsisten
-  - Hapus pesan misleading tentang "folder Download"
+  - Ganti logika export dari tulis ke folder privat → `FilePicker.platform.saveFile()` dengan `bytes`
+  - Hapus import `path_provider` (tidak perlu untuk export)
+  - User sekarang bisa pilih lokasi simpan via dialog "Save As" system Android
 
 - [x] **[6] Refactor `settings_screen.dart` ke Provider pattern**
   - File: `lib/ui/screens/settings_screen.dart`

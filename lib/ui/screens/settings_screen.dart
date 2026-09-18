@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/backup_service.dart';
 import '../../services/notification_service.dart';
@@ -82,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
-  /// Export data to JSON file
+  /// Export data to JSON file via system save dialog
   Future<void> _exportData() async {
     setState(() {
       _isLoading = true;
@@ -95,18 +96,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final timestamp = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
       final fileName = 'tugas_backup_$timestamp.json';
       
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/$fileName';
+      final bytes = Uint8List.fromList(utf8.encode(jsonData));
       
-      final file = File(filePath);
-      await file.writeAsString(jsonData);
+      final result = await FilePicker.platform.saveFile(
+        dialogTitle: l10n.saveBackupFile,
+        fileName: fileName,
+        bytes: bytes,
+      );
       
-      if (await file.exists()) {
+      if (result != null) {
         if (mounted) {
           _showSuccessSnackBar(l10n.exportSuccess);
         }
-      } else {
-        throw Exception('File gagal dibuat');
       }
       
     } catch (e) {
