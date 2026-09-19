@@ -289,7 +289,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: theme.colorScheme.primary,
             ),
             title: Text(l10n.appVersion),
-            subtitle: const Text('1.0.0'),
+            subtitle: const Text('2.3.0'),
           ),
           const Divider(height: 1),
           ListTile(
