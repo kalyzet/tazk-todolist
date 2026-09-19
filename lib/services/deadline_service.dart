@@ -90,6 +90,17 @@ class DeadlineService {
     final remainingDays = calculateRemainingDays(task.deadline);
     final isTaskOverdue = isOverdue(task.deadline);
     
+    // Completed tasks are never overdue
+    if (task.progress >= 100) {
+      return {
+        'remaining_days': remainingDays,
+        'is_overdue': false,
+        'status': 'completed',
+        'status_indonesian': 'Selesai',
+        'deadline_text': 'Selesai',
+      };
+    }
+    
     String status;
     String statusIndonesian;
     
@@ -115,12 +126,13 @@ class DeadlineService {
       'is_overdue': isTaskOverdue,
       'status': status,
       'status_indonesian': statusIndonesian,
-      'deadline_text': _formatDeadlineText(remainingDays, isTaskOverdue),
+      'deadline_text': _formatDeadlineText(task.deadline, remainingDays, isTaskOverdue),
     };
   }
 
   /// Formats deadline text in Indonesian
-  String _formatDeadlineText(int remainingDays, bool isTaskOverdue) {
+  /// Shows hours when within 1 day, days otherwise
+  String _formatDeadlineText(DateTime deadline, int remainingDays, bool isTaskOverdue) {
     if (isTaskOverdue) {
       final overdueDays = -remainingDays;
       if (overdueDays == 1) {
@@ -128,12 +140,19 @@ class DeadlineService {
       } else {
         return 'Terlambat $overdueDays hari';
       }
-    } else if (remainingDays == 0) {
-      return 'Hari ini';
-    } else if (remainingDays == 1) {
-      return 'Besok';
-    } else {
+    } else if (remainingDays > 1) {
       return '$remainingDays hari lagi';
+    } else {
+      // Within 1 day — show hours remaining
+      final now = DateTime.now();
+      final hoursLeft = deadline.difference(now).inHours;
+      if (hoursLeft <= 0) {
+        return 'Deadline sekarang';
+      } else if (hoursLeft == 1) {
+        return '1 jam lagi';
+      } else {
+        return '$hoursLeft jam lagi';
+      }
     }
   }
 

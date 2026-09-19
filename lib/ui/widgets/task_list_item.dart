@@ -195,6 +195,7 @@ class _DeadlineChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final status = deadlineStatus['status'] as String;
     final isOverdue = deadlineStatus['is_overdue'] as bool;
     final remainingDays = deadlineStatus['remaining_days'] as int;
     final deadlineText = deadlineStatus['deadline_text'] as String;
@@ -203,15 +204,15 @@ class _DeadlineChip extends StatelessWidget {
     Color textColor;
     IconData icon;
     
-    if (isOverdue) {
+    if (status == 'completed') {
+      backgroundColor = Colors.green.withOpacity(0.1);
+      textColor = Colors.green;
+      icon = Icons.check_circle;
+    } else if (isOverdue) {
       backgroundColor = Colors.red.withOpacity(0.1);
       textColor = Colors.red;
       icon = Icons.warning;
-    } else if (remainingDays == 0) {
-      backgroundColor = Colors.orange.withOpacity(0.1);
-      textColor = Colors.orange;
-      icon = Icons.today;
-    } else if (remainingDays == 1) {
+    } else if (remainingDays <= 1) {
       backgroundColor = Colors.orange.withOpacity(0.1);
       textColor = Colors.orange;
       icon = Icons.schedule;

@@ -52,7 +52,6 @@ class NotificationService {
     final now = DateTime.now();
     final deadline = task.deadline;
     
-    // Schedule notifications for 3, 2, and 1 days before deadline
     for (int daysBeforeDeadline in [3, 2, 1]) {
       final notificationDate = DateTime(
         deadline.year,
@@ -62,7 +61,6 @@ class NotificationService {
         0,
       );
 
-      // Only schedule if the notification date is in the future
       if (notificationDate.isAfter(now)) {
         final notificationId = _generateNotificationId(task.id!, daysBeforeDeadline);
         
@@ -81,7 +79,7 @@ class NotificationService {
             ),
             iOS: DarwinNotificationDetails(),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         );
       }
